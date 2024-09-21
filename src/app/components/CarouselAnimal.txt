@@ -1,0 +1,108 @@
+"use client"; // This makes the component a Client Component
+
+import React, { useEffect, useState, style } from "react";
+
+export default function CarouselAnimal() {
+  // State to track the current index of images
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Array of images for the carousel
+  const images = [
+    "https://images.unsplash.com/photo-1726510114046-b7938cdc1bd1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://plus.unsplash.com/premium_photo-1661816511883-d53e6e9e106f?q=80&w=1958&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1673232578361-03149a3817c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1522598312049-70ccda16fe43?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://plus.unsplash.com/premium_photo-1667667846123-26ce04aa3271?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ];
+
+  // Function to move to the next image
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  // Function to move to the previous image
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  // UseEffect to automatically move to the next image every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 3000);
+    return () => clearInterval(interval); // Cleanup the interval on unmount
+  }, []);
+
+  // Create an array of 5 images to display
+  const displayedImages = [];
+  for (let i = 0; i < 5; i++) {
+    displayedImages.push(images[(currentIndex + i) % images.length]);
+  }
+
+  return (
+    <div id="controls-carousel" className="relative w-full overflow-hidden" data-carousel="slide">
+      {/* <!-- Carousel wrapper --> */}
+      <div className="grid grid-cols-5">
+        {displayedImages.map((image, index) => (
+          <div className="relative block w-full h-full" key={index}>
+            <img
+                src={image}
+                className="block w-full h-full object-cover"
+                alt={`Carousel image ${index + 1}`}
+                style={{ width: "600px", height: "400px" }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* <!-- Slider controls --> */}
+      {/* <button
+        type="button"
+        className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        onClick={prevSlide}
+      >
+        <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+          <svg
+            className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 6 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M5 1 1 5l4 4"
+            />
+          </svg>
+          <span className="sr-only">Previous</span>
+        </span>
+      </button>
+      
+      <button
+        type="button"
+        className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        onClick={nextSlide}
+      >
+        <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+          <svg
+            className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 6 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 9 4-4-4-4"
+            />
+          </svg>
+          <span className="sr-only">Next</span>
+        </span>
+      </button> */}
+    </div>
+  );
+}
