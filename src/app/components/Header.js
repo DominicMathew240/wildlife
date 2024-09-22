@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../images/logo.jpg";
 
 export default function Header() {
     return (
-        <header className="flex justify-between items-center w-full p-4 bg-white text-gray-500 h-28 relative z-10">
+        <header className="sticky top-0 flex justify-between items-center w-full p-4 bg-white text-gray-500 h-24 z-20">
             <div className="flex items-center">
-                <Image src="/logo.png" alt="Logo" width={40} height={40} />
-                <h1 className="ml-2">Next.js</h1>
+                <Image src={logo} alt="Logo" width={60} height={60} />
+                <h1 className=" ml-2 font-bold text-xl">Sarawak Forestry Corporation</h1>
             </div>
             <nav>
                 <ul className="flex font-bold">

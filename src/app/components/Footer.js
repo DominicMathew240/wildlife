@@ -1,4 +1,7 @@
 import React from "react";
+import Image from "next/image";
+
+import logo from "../images/logo.jpg";
 
 export default function Footer() {
     return (
@@ -6,8 +9,8 @@ export default function Footer() {
             <div className="grid grid-cols-3 justify-center items-center w-full">
                 {/* Company Logo */}
                 <div className="flex justify-start items-center flex-row gap-4">
-                    <img src="https://placehold.co/200x200" alt="Logo" width={100} height={100} />
-                    <p>Sarawak Forestry Corporation</p>
+                    <Image src={logo} alt="Logo" width={100} height={100} />
+                    <p className="ml-2 font-bold text-2xl w-[240px]">Sarawak Forestry Corporation</p>
                 </div>
                 {/* Website Link */}
                 <div className="flex flex-row justify-around items-start">

@@ -3,7 +3,7 @@ import React from "react";
 export default function CarouselHero() {
     return (
         // Carousel Hero
-        <div id="animation-carousel" class="relative w-full" data-carousel="slide">
+        <div id="animation-carousel" class="relative w-full z-10" data-carousel="slide">
             {/* <!-- Carousel wrapper --> */}
             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                 {/* <!-- Item 1 --> */}
