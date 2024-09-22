@@ -19,9 +19,8 @@ export default function Donation() {
 
             {/* Event List Content */}
             <section className="flex flex-col w-full p-10 text-black">
-                <div className="flex flex-row justify-evenly w-full">
-                    {/* List Event */}
-                    <div className="flex flex-col justify-center items-start w-1/2">
+                <div className="flex flex-row justify-evenly items-center w-full">
+                      <div className="flex flex-col justify-center items-start w-1/2">
                         <h2 className="mb-4 font-bold text-4xl w-full">Event List</h2>
                         <p className="mb-6 w-full ">Join our event and make a difference</p>
 
@@ -48,40 +47,12 @@ export default function Donation() {
                             <h2 className="mb-4 font-bold text-2xl ">The Eye of Borneo</h2>
                             <p className="mb-6">Embark on a journey to the heart of Borneo's rainforests and discover the unique wildlife that calls this place home. From the elusive orangutans to the rare Bornean clouded leopard, you'll have the opportunity to see these incredible species up close and learn about conservation efforts to protect them.</p>
                         </div>
-                    </div>
+                      </div>
 
-                    {/* Past Event */}
-                    <div className="flex flex-col w-1/5 h-[600px]">
+                      <div className="flex flex-col h-[600px]">
                         <h2 className="mb-4 font-bold text-2xl">Past Event</h2>
-                        <div className="flex flex-col items-start p-4 bg-yellow-100">
-                            {/* Past Event 1 */}
-                            <div className="flex flex-row">
-                                <img src="http://placehold.it/100x100" alt="Event 1" className="" />
-                                <div className="flex flex-col ml-6">
-                                    <p className="text-sm">Event 1 Date</p>
-                                    <h2 className=" font-bold text-2xl ">Event Title</h2>
-                                </div>
-                            </div>
-
-                            {/* Past Event 2 */}
-                            <div className="flex flex-row mt-4">
-                                <img src="http://placehold.it/100x100" alt="Event 2" className="" />
-                                <div className="flex flex-col ml-6">
-                                    <p className="text-sm">Event 2 Date</p>
-                                    <h2 className=" font-bold text-2xl ">Event Title</h2>
-                                </div>
-                            </div>
-
-                            {/* Past Event 3 */}
-                            <div className="flex flex-row mt-4">
-                                <img src="http://placehold.it/100x100" alt="Event 3" className="" />
-                                <div className="flex flex-col ml-6">
-                                    <p className="text-sm">Event 3 Date</p>
-                                    <h2 className=" font-bold text-2xl ">Event Title</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <p className="mb-6">Event 1 Description</p>
+                      </div>
                 </div>
             </section>
             

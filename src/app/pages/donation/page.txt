@@ -1,23 +1,8 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import ThankYouModal from "../../components/ThankYouModal";
-
 
 export default function Donation() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const handleDonateClick = (e) => {
-        e.preventDefault();
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
     return (
         <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
             {/* Header */}
@@ -52,15 +37,15 @@ export default function Donation() {
                         <p className="mb-4 font-bold">Enter your details:</p>
                         <input type="text" placeholder="Full Name" className="border-2 border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:border-blue-500" />
                         <input type="email" placeholder="Email" className="border-2 border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:border-blue-500" />
+                        {/* Phone Number */}
                         <input type="tel" placeholder="Phone Number" className="border-2 border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:border-blue-500" />
+                        {/* Amount */}
+                        {/* Message */}
                         <textarea placeholder="Message" className="border-2 border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:border-blue-500" />
-                        <button onClick={handleDonateClick} className="bg-blue-500 font-bold text-white p-3 w-1/2 rounded-lg hover:bg-blue-600 transition duration-300">Donate</button>
+                        <button className="bg-blue-500 font-bold text-white p-3 w-1/2 rounded-lg hover:bg-blue-600 transition duration-300">Donate</button>
                     </form>
                 </div>
             </section>
-
-            {/* Thank You Modal */}
-            {isModalOpen && <ThankYouModal closeModal={closeModal} />}
 
             {/* Footer */}
             <Footer />

@@ -64,6 +64,10 @@ export default function CarouselAnimal() {
                         alt={`Carousel image ${index + 1}`}
                         style={{ width: "600px", height: "400px" }}
                     />
+                    {/* image title */}
+                    <h2 className="absolute inset-0 text-orange-300 p-2 text-2xl font-bold transform translate-y-8 group-hover:opacity-0 opacity-100 transition-opacity duration-500">
+                        {image.title}
+                    </h2>
 
                     {/* Overlay for text and learn more button */}
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end">
