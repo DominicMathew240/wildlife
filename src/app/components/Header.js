@@ -6,8 +6,10 @@ export default function Header() {
     return (
         <header className="sticky top-0 flex justify-between items-center w-full p-4 bg-white text-gray-500 h-24 z-20">
             <div className="flex items-center">
-                <Image src={logo} alt="Logo" width={60} height={60} />
-                <h1 className=" ml-2 font-bold text-xl">Sarawak Forestry Corporation</h1>
+                <a href="/" className="flex flex-row items-center">
+                    <Image src={logo} alt="Logo" width={60} height={60} />
+                    <h1 className=" ml-2 font-bold text-xl">Sarawak Forestry Corporation</h1>
+                </a>
             </div>
             <nav>
                 <ul className="flex font-bold">

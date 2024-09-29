@@ -1,52 +1,42 @@
 "use client";
 
 import Image from "next/image";
-import { React } from "react";
+import { React, useEffect, useState } from "react";
+
+// Components
 import Header from "./components/Header";
 import CarouselAnimal from "./components/CarouselAnimal";
 import Footer from "./components/Footer";
 import CarouselHero from "./components/CarouselHero";
+import StickyHeader from "./components/StickyHeader";
 
 export default function Home() {
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/events")
+      .then((res) => res.json())
+      .then((data) => {
+        const formattedData = data.map(event => {
+          const formattedDate = new Date(event.date).toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          return { ...event, date: formattedDate };
+        });
+        setEvents(formattedData);
+      })
+      .catch(error => console.error('Error fetching events:', error));
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center">
 
-      {/* contact detail and login */}
-      <section className={` bg-gray-800 w-full p-4 text-sm`}>
-        <div className="flex flex-row justify-between items-center w-full text-gray-400">
-          <div className="flex flex-row justify-center items-center gap-4">
-            <p className="flex flex-row">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 mr-1 text-yellow-300">
-                <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
-              </svg>
-              Contact Us: +60 12-345-6789
-            </p>
-            <p className="flex flex-row">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 mr-1 text-yellow-300">
-                <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
-                <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
-              </svg>
-              info@sarawakforestry.com
-            </p>
-            <p className="flex flex-row">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 mr-1 text-yellow-300">
-                <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
-              </svg>
-              Lot 391, Jalan Perbananan
-            </p>
-          </div>
-
-          {/* 3 rows */}
-          <div className="flex flex-row items-end gap-4 font-semibold">
-            <p className="hover:text-yellow-400">Login</p>
-            <p>/</p>
-            <p className="hover:text-yellow-400">Register</p>
-            <p>/</p>
-            <p className="hover:text-yellow-400">Donate</p>
-          </div>
-        </div>
-      </section>
+      {/* Sticky Header - Login Details */}
+      <StickyHeader />
 
       {/* Header */}
       <Header />
@@ -85,33 +75,57 @@ export default function Home() {
       </section>
 
       {/* Test CarouselHero */}
-      <CarouselHero />
+      {/* <CarouselHero /> */}
 
       {/* Features */}
       <section className="flex flex-col justify-center items-center w-full p-10 bg-gray-800 text-white">
-        <h2 className="mb-4 font-bold text-4xl">Features</h2>
+        <h2 className="mb-10 font-bold text-4xl">Features</h2>
         <div className="flex flex-row gap-10 justify-around items-center w-full">
-          <div className="flex flex-col items-center">
-            <img src="https://placehold.co/400x400" alt="Logo" width={200} height={200} />
-            <h3>Feature 1</h3>
-            <p>Feature 1 description</p>
+
+          {/* Features 1 */}
+          <div className="flex flex-row justify-center items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 mr-2 text-yellow-300">
+              <path d="M12 7.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
+              <path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 14.625v-9.75ZM8.25 9.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM18.75 9a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V9.75a.75.75 0 0 0-.75-.75h-.008ZM4.5 9.75A.75.75 0 0 1 5.25 9h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75V9.75Z" clip-rule="evenodd" />
+              <path d="M2.25 18a.75.75 0 0 0 0 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 0 0-.75-.75H2.25Z" />
+            </svg>
+
+            <div className="flex flex-col items-start w-1/2">
+              <h3 className="text-2xl font-bold uppercase">Donations</h3>
+              <p className="text-lg">Support our conservation efforts by making a donation today.</p>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <img src="https://placehold.co/400x400" alt="Logo" width={200} height={200} />
-            <h3>Feature 2</h3>
-            <p>Feature 2 description</p>
+
+          {/* Features 2 */}
+          <div className="flex flex-row justify-center items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 mr-2 text-yellow-300">
+              <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+              <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
+            </svg>
+            <div className="flex flex-col items-start w-1/2">
+              <h3 className="text-2xl font-bold uppercase">New Events</h3>
+              <p className="text-lg">Check out our latest events and join us in our conservation efforts.</p>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <img src="https://placehold.co/400x400" alt="Logo" width={200} height={200} />
-            <h3>Feature 3</h3>
-            <p>Feature 3 description</p>
+
+          {/* Features 3 */}
+          <div className="flex flex-row justify-center items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 mr-2 text-yellow-300">
+              <path d="M12 .75a8.25 8.25 0 0 0-4.135 15.39c.686.398 1.115 1.008 1.134 1.623a.75.75 0 0 0 .577.706c.352.083.71.148 1.074.195.323.041.6-.218.6-.544v-4.661a6.714 6.714 0 0 1-.937-.171.75.75 0 1 1 .374-1.453 5.261 5.261 0 0 0 2.626 0 .75.75 0 1 1 .374 1.452 6.712 6.712 0 0 1-.937.172v4.66c0 .327.277.586.6.545.364-.047.722-.112 1.074-.195a.75.75 0 0 0 .577-.706c.02-.615.448-1.225 1.134-1.623A8.25 8.25 0 0 0 12 .75Z" />
+              <path fill-rule="evenodd" d="M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0 0 0 4.22 0 .75.75 0 1 1 .28 1.473 12.819 12.819 0 0 1-4.78 0 .75.75 0 0 1-.597-.876ZM9.754 22.344a.75.75 0 0 1 .824-.668 13.682 13.682 0 0 0 2.844 0 .75.75 0 1 1 .156 1.492 15.156 15.156 0 0 1-3.156 0 .75.75 0 0 1-.668-.824Z" clip-rule="evenodd" />
+            </svg>
+            
+            <div className="flex flex-col items-start w-1/2">
+              <h3 className="text-2xl font-bold uppercase">Interactive Map</h3>
+              <p className="text-lg">Explore our interactive map and learn more about the wildlife in Borneo.</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Hero Description */}
       <section className="flex flex-row justify-center items-center w-full h-screen p-2 text-black my-10">
-        <div className="flex flex-col justify-center ml-10 w-1/2">
+        <div className="flex flex-col justify-center ml-20 w-1/2">
           <hr className="w-[80px] border-2 border-red-500 mb-6" />
           <h2 className="mb-10 font-bold text-4xl">Orangutan Oasis: Protecting Wildlife, Empowering Communities</h2>
           <p className="text-2xl">
@@ -169,7 +183,7 @@ export default function Home() {
         <CarouselAnimal />
       </section>
 
-      {/* Latest Events */}
+      {/* Latest Events  -  Have not add logic, push the latest event and limit to 2 content view at a time*/}
       <section className="flex flex-col items-center w-full my-10">
         <h2 className="mb-8 font-bold text-black text-4xl pt-4">Latest Events</h2>
         <div className="flex flex-row justify-evenly items-center gap-6 w-full h-full ">
@@ -184,61 +198,39 @@ export default function Home() {
 
           {/* List of all the event */}
           <div className="w-1/2 h-[626px] text-black bg-green-100 flex flex-col justify-evenly items-center p-4">
-            {/* First Event */}
-            <div className="flex flex-row justify-evenly items-center w-full">
-              <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
-              <div className="flex flex-col justify-center items-start w-1/2 ml-4">
+            {events
+              .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort events by date in descending order
+              .slice(0, 2) // Get the latest 2 events
+              .map((event) => (
+                <div key={event.id} className="flex flex-row justify-evenly items-center w-full">
+                  <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
+                  <div className="flex flex-col justify-center items-start w-1/2 ml-4">
 
-                {/* Event Header */}
-                <div className="flex flex-row mb-2">
-                  <p className="text-md text-center mr-4 flex flex-row">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                    2:00 am
-                  </p>
-                  <p className="text-md text-center flex flex-row">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
-                    New
-                  </p>
+                    {/* Event Header */}
+                    <div className="flex flex-row mb-2">
+                      <p className="text-md text-center mr-4 flex flex-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 mr-1">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        {event.date}
+                      </p>
+                      <p className="text-md text-center flex flex-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-1">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                        New
+                      </p>
+                    </div>
+
+                    <h3 className="mb-4 font-extrabold text-xl text-center">{event.title}</h3>
+                    <p className="text-sm">{event.description}</p>
+                  </div>
                 </div>
-
-                <h3 className="mb-4 font-extrabold text-xl text-center">A New Orangutan Home</h3>
-                <p className="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget luctus lacinia, nisi metus aliquet nunc, nec lacinia turpis turpis nec tortor. Donec auctor, ligula a tincidunt tincidunt, mi turpis ultricies tortor, ac lacinia odio libero et odio. Nullam in nunc eget nunc aliquam tincidunt. Nulla facilisi. Donec nec metus id lorem tincidunt dapibus. Nulla facilisi. Donec nec metus id lorem tincidunt dapibus.</p>
-              </div>
-            </div>
-
-            {/* Second Event */}
-            <div className="flex flex-row justify-evenly items-center w-full">
-              <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
-              <div className="flex flex-col justify-center items-start w-1/2 ml-4">
-                {/* Event Header */}
-                <div className="flex flex-row mb-2">
-                  <p className="text-md text-center mr-4 flex flex-row">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                    2:00 am
-                  </p>
-                  <p className="text-md text-center flex flex-row">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
-                    New
-                  </p>
-                </div>
-                <h3 className="mb-2 font-extrabold text-xl text-center">Welcome Rhinoceros Hornbill</h3>
-                <p className="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget luctus lacinia, nisi metus aliquet nunc, nec lacinia turpis turpis nec tortor. Donec auctor, ligula a tincidunt tincidunt, mi turpis ultricies tortor, ac lacinia odio libero et odio. Nullam in nunc eget nunc aliquam tincidunt. Nulla facilisi. Donec nec metus id lorem tincidunt dapibus. Nulla facilisi. Donec nec metus id lorem tincidunt dapibus.</p>
-              </div>
-            </div>
+              ))}
           </div>
         </div>
       </section>
-      
 
       {/* Footer */}
       <Footer />

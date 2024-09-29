@@ -15,7 +15,8 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "react-router-dom": "^6.26.2",
-    "react-use": "^17.5.1"
+    "react-use": "^17.5.1",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "eslint": "^8",

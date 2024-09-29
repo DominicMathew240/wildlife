@@ -19,7 +19,7 @@ export default function ThankYouModal({ closeModal }) {
                 <div className="thank-you-animation mb-4">
                     🎉
                 </div>
-                <button onClick={closeModal} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Close</button>
+                <button onClick={closeModal} className="bg-blue-500 text-white px-4 py-2 font-bold rounded hover:bg-blue-600 transition duration-300">Close</button>
             </div>
         </div>
     );

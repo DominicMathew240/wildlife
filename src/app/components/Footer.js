@@ -9,16 +9,18 @@ export default function Footer() {
             <div className="grid grid-cols-3 justify-center items-center w-full">
                 {/* Company Logo */}
                 <div className="flex justify-start items-center flex-row gap-4">
-                    <Image src={logo} alt="Logo" width={100} height={100} />
-                    <p className="ml-2 font-bold text-2xl w-[240px]">Sarawak Forestry Corporation</p>
+                    <a href="/" className="flex flex-row justify-center items-center">
+                        <Image src={logo} alt="Logo" width={100} height={100} />
+                        <p className="ml-2 font-bold text-2xl w-[240px]">Sarawak Forestry Corporation</p>
+                    </a>
                 </div>
                 {/* Website Link */}
                 <div className="flex flex-row justify-around items-start">
                     <div className="flex flex-col justify-center items-start">
                         <h2 className="font-bold text-2xl mb-4">LINKS</h2>
-                        <a href="#" className="text-white mt-2">Make A Donation</a>
-                        <a href="#" className="text-white mt-2">Wildlife Education</a>
-                        <a href="#" className="text-white mt-2">Contact Us</a>
+                        <a href="/pages/donation" className="text-white mt-2 font-semibold hover:underline hover:underline-offset-4">Make A Donation</a>
+                        <a href="/pages/event" className="text-white mt-2 font-semibold hover:underline hover:underline-offset-4">Wildlife Events</a>
+                        <a href="#" className="text-white mt-2 font-semibold hover:underline hover:underline-offset-4">Contact Us</a>
                     </div>
 
                     <div className="flex flex-col justify-center items-start">

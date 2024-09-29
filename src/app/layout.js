@@ -1,14 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
 
-// Route
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

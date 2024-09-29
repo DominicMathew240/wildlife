@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+
+// Components
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ThankYouModal from "../../components/ThankYouModal";
+import StickyHeader from "../../components/StickyHeader";
 
 
 export default function Donation() {
@@ -20,6 +23,10 @@ export default function Donation() {
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
+
+            {/* Sticky Header - with login details */}
+            <StickyHeader />
+            
             {/* Header */}
             <Header />
 

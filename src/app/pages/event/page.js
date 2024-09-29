@@ -1,11 +1,43 @@
-import React from "react";
+"use client";
 
+import { React, useEffect, useState } from "react";
+import Link from "next/link";
+import axios from "axios";  // Import Axios
+
+// Components
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import StickyHeader from "../../components/StickyHeader";
 
-export default function Donation() {
+export default function Event() {
+
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        // Fetch the events list using Axios
+        axios.get("http://localhost:4000/events")
+            .then((response) => {
+                const data = response.data;
+                const formattedData = data.map(event => {
+                    const formattedDate = new Date(event.date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    return { ...event, date: formattedDate };
+                });
+                setEvents(formattedData);  // Set the events with formatted date
+            })
+            .catch(error => console.error('Error fetching events:', error));
+    }, []);
+
     return (
         <div className="flex flex-col justify-center items-center">
+
+            {/* Sticky Header - with login details */}
+            <StickyHeader />
+
             {/* Header */}
             <Header />
 
@@ -25,29 +57,27 @@ export default function Donation() {
                         <h2 className="mb-4 font-bold text-4xl w-full">Event List</h2>
                         <p className="mb-6 w-full ">Join our event and make a difference</p>
 
-                        {/* event 1 */}
-                        <div className="flex flex-col">
-                            <img src="http://placehold.it/770x420" alt="Event 1" className="mb-4 w-full" />
-                            <div className="flex flex-row">
-                                <p className="text-sm mb-4 mr-4">Event 1 Date</p>
-                                <p className="text-sm mb-4">Event 1 Location</p>
+                        {/* Display list of events */}
+                        {events
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .slice(0, 5)
+                        .map((event) => (
+                            <div className="flex flex-col" key={ event.event_id }>
+                                {/* Link to the event content page */}
+                                {/* <Link href={`/event/event_content/${event.event_id}`} className="hover:text-orange-500"> */}
+                                <Link href={`event/event_content/`} className="hover:text-orange-500">
+                                    <input hidden name="event_id" value={event.event_id} />
+                                    <img src="http://placehold.it/770x420" alt={event.title} className="mb-4 w-full" />
+                                    <div className="flex flex-row">
+                                        <p className="text-sm mb-4 mr-4">{ event.date }</p>
+                                        <p className="text-sm mb-4">{ event.location }</p>
+                                    </div>
+
+                                    <h2 className="mb-4 font-bold text-2xl ">{ event.title }</h2>
+                                    <p className="mb-6">{ event.description }</p>
+                                </Link>
                             </div>
-
-                            <h2 className="mb-4 font-bold text-2xl ">Borneo Wildlife Expedition</h2>
-                            <p className="mb-6">Join us for an unforgettable journey into the heart of Borneo's rainforests. Discover the unique and diverse wildlife, including the elusive orangutans, pygmy elephants, and the rare Bornean clouded leopard. Learn about conservation efforts and how you can help protect these incredible species.</p>
-                        </div>
-
-                        {/* event 2 */}
-                        <div className="flex flex-col">
-                            <img src="http://placehold.it/770x420" alt="Event 1" className="mb-4 w-full" />
-                            <div className="flex flex-row">
-                                <p className="text-sm mb-4 mr-4">Event 2 Date</p>
-                                <p className="text-sm mb-4">Event 2 Location</p>
-                            </div>
-
-                            <h2 className="mb-4 font-bold text-2xl ">The Eye of Borneo</h2>
-                            <p className="mb-6">Embark on a journey to the heart of Borneo's rainforests and discover the unique wildlife that calls this place home. From the elusive orangutans to the rare Bornean clouded leopard, you'll have the opportunity to see these incredible species up close and learn about conservation efforts to protect them.</p>
-                        </div>
+                        ))}
                     </div>
 
                     {/* Past Event */}
@@ -84,7 +114,6 @@ export default function Donation() {
                     </div>
                 </div>
             </section>
-            
 
             {/* Footer */}
             <Footer />
