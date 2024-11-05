@@ -22,6 +22,9 @@ export default function Header() {
                     <li className="ml-4 font-bold hover:underline hover:underline-offset-4 hover:text-black duration-100 ease-in-out">
                         <Link href="/pages/donation">Donation</Link>
                     </li>
+                    <li className="ml-4 font-bold hover:underline hover:underline-offset-4 hover:text-black duration-100 ease-in-out">
+                        <Link href="/pages/interactive">Interactive</Link>
+                    </li>
                 </ul>
             </nav>
         </header>

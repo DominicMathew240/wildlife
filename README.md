@@ -5,6 +5,10 @@ npm run dev
 cd backend
 npm start
 
+<!-- Start AI model -->
+cd ai
+flask run
+
 
 <!-- Build For Production -->
 # To optimize image

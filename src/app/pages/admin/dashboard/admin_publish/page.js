@@ -44,15 +44,15 @@ export default function PublishStory() {
     };
 
     return (
-        <div className="flex flex-row h-screen">
+        <div className="flex flex-row h-screen bg-gray-100">
             <div className="w-1/5">
                 <Sidebar />
             </div>
         
             <div className="gap-4 w-full max-h-screen overflow-y-auto text-black flex flex-col justify-evenly items-center p-4 mt-4">
                 
-                {/* 2 row box, display number of publish story and likes */}
-                <div className="flex flex-row justify-evenly items-center gap-4 w-full">
+                {/* 4 row box, display number of publish story and likes */}
+                <div className="flex flex-row justify-between items-center  bg-white p-4 rounded-md w-full">
                     <div className="flex bg-gray-200 p-4 rounded-md flex-col items-center">
                         <p className="text-xl">Total Event:  <span className="font-bold">{eventCount}</span></p>
                     </div>
@@ -68,40 +68,44 @@ export default function PublishStory() {
                 </div>
 
                 
-                <div className="flex flex-row justify-between w-full mt-4">
-                    <h1 className="text-2xl font-bold">Publish Event</h1>
-                    <button onClick={openModal} className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                        Add Event
-                    </button>
-                </div>
-
-                {events.map((event) => (
-                    <div key={event.event_id} className="flex flex-row justify-evenly items-center w-full my-4 pt-6">
-                        <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
-                        <div className="flex flex-col justify-center items-start w-1/2 ml-4">
-
-                            {/* Event Header */}
-                            <div className="flex flex-row mb-2">
-                                <p className="text-md text-center mr-4 flex flex-row">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 mr-1">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                    </svg>
-                                    {event.date}
-                                </p>
-                                <p className="text-md text-center flex flex-row">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-1">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                    </svg>
-                                    New
-                                </p>
-                            </div>
-
-                            <h3 className="mb-4 font-extrabold text-xl text-center">{event.title}</h3>
-                            <p className="text-sm">{event.description}</p>
-                        </div>
+                <div className="flex flex-col justify-between bg-white rounded-md w-full p-4 mt-4">
+                    <div className="flex flex-row justify-between items-center w-full">
+                        <h1 className="text-2xl font-bold">Publish Event</h1>
+                        <button onClick={openModal} className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                            Add Event
+                        </button>
                     </div>
-                ))}
+
+                    <hr className="bg-black my-4" />
+
+                    {events.map((event) => (
+                        <div key={event.event_id} className="flex flex-row justify-evenly items-center w-full my-4">
+                            <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
+                            <div className="flex flex-col justify-center items-start w-1/2 ml-4">
+
+                                {/* Event Header */}
+                                <div className="flex flex-row mb-2">
+                                    <p className="text-md text-center mr-4 flex flex-row">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 mr-1">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                        {event.date}
+                                    </p>
+                                    <p className="text-md text-center flex flex-row">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-1">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                        </svg>
+                                        New
+                                    </p>
+                                </div>
+
+                                <h3 className="mb-4 font-extrabold text-xl text-center">{event.title}</h3>
+                                <p className="text-sm">{event.description}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Modal for publishing new event */}

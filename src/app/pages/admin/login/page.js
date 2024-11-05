@@ -9,7 +9,7 @@ export default function Login(){
                 <form className="flex flex-col justify-center items-center w-full">
                     <input type="text" placeholder="Username" className="w-1/3 p-2 my-4 border border-gray-400 rounded" />
                     <input type="password" placeholder="Password" className="w-1/3 p-2 my-4 border border-gray-400 rounded" />
-                    <Link href="/pages/admin/dashboard" className="w-1/3 p-2 my-4 bg-blue-500 text-white text-center font-bold rounded">
+                    <Link href="/pages/admin/dashboard/admin_publish" className="w-1/3 p-2 my-4 bg-blue-500 text-white text-center font-bold rounded">
                         Login
                     </Link>
                 </form>
