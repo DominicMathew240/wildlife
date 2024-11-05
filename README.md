@@ -5,9 +5,12 @@ npm run dev
 cd backend
 npm start
 
-<!-- Start AI model -->
+<!-- Start AI model | * Manually download the pip package that is missing. -->
 cd ai
+source venv/bin/activate
 flask run
+
+<!--  -->
 
 
 <!-- Build For Production -->
