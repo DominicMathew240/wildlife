@@ -66,13 +66,6 @@ def index():
         prediction = predicted.item()
 
         print(prediction)
-        
-        if prediction == 638:
-            prediction = 'bearded_pig'
-        elif prediction == 112:
-            prediction = 'malaysian_civet'
-        else:
-            prediction = 'unknown'
 
         return jsonify({'prediction': prediction})
 
