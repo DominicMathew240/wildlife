@@ -95,8 +95,10 @@ def predict():
         _, predicted = torch.max(output, 1)
 
     # Map the prediction to the class name
-    class_names = ['bearded_pig', 'malaysian_civet']  # Replace with your class names
-    prediction = class_names[predicted.item()]
+    # class_names = ['bearded_pig', 'malaysian_civet']  # Replace with your class names
+    # prediction = class_names[predicted.item()]
+
+    prediction = predicted.item()
 
     return jsonify({'prediction': prediction})
 
