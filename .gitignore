@@ -38,3 +38,4 @@ next-env.d.ts
 # Python Flask
 __pycache__/
 ai/venv/*
+ai/.venv/*

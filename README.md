@@ -7,7 +7,7 @@ npm start
 
 <!-- Start AI model | * Manually download the pip package that is missing. -->
 cd ai
-source venv/bin/activate
+source .venv/bin/activate
 flask run
 
 <!--  -->
