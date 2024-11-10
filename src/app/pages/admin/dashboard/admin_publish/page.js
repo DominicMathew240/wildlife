@@ -12,6 +12,9 @@ export default function PublishStory() {
     const [events, setEvents] = useState([]);
     const [eventCount, setEventCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editEventData, setEditEventData] = useState({ title: "", date: "", description: "" });
 
     useEffect(() => {
         fetchEvents();
@@ -41,6 +44,51 @@ export default function PublishStory() {
     const closeModal = () => {
         setIsModalOpen(false);
         fetchEvents(); // Refresh events after closing the modal
+    };
+
+    const openEventModal = (event) => {
+        setSelectedEvent(event);
+    };
+
+    const closeEventModal = () => {
+        setSelectedEvent(null);
+    };
+
+    const openEditModal = (event) => {
+        setEditEventData(event);
+        setIsEditModalOpen(true);
+    };
+
+    const closeEditModal = () => {
+        setIsEditModalOpen(false);
+    };
+
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditEventData({ ...editEventData, [name]: value });
+    };
+
+    const saveEditEvent = () => {
+        // Implement save functionality
+        console.log("Save edited event:", editEventData);
+        closeEditModal();
+    };
+
+    const editEvent = (event) => {
+        // Implement edit functionality
+        console.log("Edit event:", event);
+    };
+
+    const deleteEvent = (eventId) => {
+        // Implement delete functionality
+        axios.delete(`http://localhost:4000/events/${eventId}`)
+            .then(() => {
+                fetchEvents();
+                closeEventModal();
+            })
+            .catch(error => {
+                console.error("Error deleting event:", error);
+            });
     };
 
     return (
@@ -79,7 +127,7 @@ export default function PublishStory() {
                     <hr className="bg-black my-4" />
 
                     {events.map((event) => (
-                        <div key={event.event_id} className="flex flex-row justify-evenly items-center w-full my-4">
+                        <div key={event.event_id} className="flex flex-row justify-evenly items-center w-full my-4 cursor-pointer" onClick={() => openEventModal(event)}>
                             <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
                             <div className="flex flex-col justify-center items-start w-1/2 ml-4">
 
@@ -111,11 +159,75 @@ export default function PublishStory() {
             {/* Modal for publishing new event */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="w-4/5 h-4/5 bg-white rounded-lg shadow-lg">
+                    <div className="w-4/5 h-4/5 bg-white rounded-lg shadow-lg p-4">
                         <button onClick={closeModal} className="p-2 text-black rounded-md hover:text-red-600">
                             X
                         </button>
                         <AddEvent onEventAdded={fetchEvents} closeModal={closeModal} />
+                    </div>
+                </div>
+            )}
+
+            {/* Modal for displaying full event write-up */}
+            {selectedEvent && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="w-4/5 h-4/5 bg-white rounded-lg shadow-lg p-4 overflow-y-auto relative">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-2xl font-bold">{selectedEvent.title}</h2>
+                            <div className="flex space-x-2">
+                                <button onClick={() => openEditModal(selectedEvent)} className="p-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+                                    Edit
+                                </button>
+                                <button onClick={() => deleteEvent(selectedEvent.event_id)} className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                                    Delete
+                                </button>
+                                <button onClick={closeEventModal} className="p-2 text-black rounded-md hover:text-red-600">
+                                    X
+                                </button>
+                            </div>
+                        </div>
+                        <p className="text-md mb-4">{selectedEvent.date}</p>
+                        <p className="text-sm">{selectedEvent.description}</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal for editing event */}
+            {isEditModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="w-4/5 h-4/5 bg-white rounded-lg shadow-lg p-4 overflow-y-auto relative">
+                        <button onClick={closeEditModal} className="absolute top-4 right-4 p-2 text-black rounded-md hover:text-red-600">
+                            X
+                        </button>
+                        <div className="flex flex-col space-y-4">
+                            <h2 className="text-2xl font-bold">Edit Event</h2>
+                            <input
+                                type="text"
+                                name="title"
+                                value={editEventData.title}
+                                onChange={handleEditChange}
+                                className="p-2 border border-gray-300 rounded-md"
+                                placeholder="Title"
+                            />
+                            <input
+                                type="date"
+                                name="date"
+                                value={editEventData.date}
+                                onChange={handleEditChange}
+                                className="p-2 border border-gray-300 rounded-md"
+                            />
+                            <textarea
+                                name="description"
+                                value={editEventData.description}
+                                onChange={handleEditChange}
+                                className="p-2 border border-gray-300 rounded-md"
+                                placeholder="Description"
+                                rows="4"
+                            />
+                            <button onClick={saveEditEvent} className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                Save
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
