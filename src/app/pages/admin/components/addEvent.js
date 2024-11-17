@@ -10,7 +10,8 @@ export default function AddEvent({ onEventAdded, closeModal }) {
         date: "2024-10-1",
         location: "Event Location",
         description: "Event Description",
-        article: ["Paragraph 1", "Paragraph 2"] // Initialize with example paragraphs
+        article: ["Paragraph 1", "Paragraph 2"], // Initialize with example paragraphs
+        height: "500px" // Initialize with a default height
     });
 
     const handleChange = (e) => {
@@ -61,7 +62,9 @@ export default function AddEvent({ onEventAdded, closeModal }) {
     };
     
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 overflow-y-auto h-full">
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 overflow-y-auto" style={{ height: formData.height }}>
+
+            
             <div className="flex flex-col">
                 <label className="mb-2 font-semibold text-gray-700">Title:</label>
                 <input
@@ -104,6 +107,15 @@ export default function AddEvent({ onEventAdded, closeModal }) {
                 <input
                     name="description"
                     value={formData.description}
+                    onChange={handleChange}
+                    className="p-2 border border-gray-300 rounded-md"
+                />
+            </div>
+            <div className="flex flex-col">
+                <label className="mb-2 font-semibold text-gray-700">Height:</label>
+                <input
+                    name="height"
+                    value={formData.height}
                     onChange={handleChange}
                     className="p-2 border border-gray-300 rounded-md"
                 />

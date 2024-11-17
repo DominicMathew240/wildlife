@@ -308,7 +308,7 @@ export default function Dashboard() {
                     <MapContainer 
                         center={mapCenter} 
                         zoom={zoomLevel} 
-                        style={{ height: "60%", width: "100%", cursor: 'grab' }}
+                        style={{ height: "100%", width: "100%", cursor: 'point' }}
                     >
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
