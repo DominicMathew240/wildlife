@@ -43,7 +43,18 @@ export default function Home() {
 
       {/* Hero Banner with carousel and text on the carousel */}
       <section className="relative flex flex-col justify-center items-center w-full text-white">
-        <img className="object-cover h-screen" src="https://plus.unsplash.com/premium_photo-1674864875568-374ab9e9dcbc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo" width={2000} height={1000} />
+        {/* <img className="object-cover h-screen" src="https://plus.unsplash.com/premium_photo-1674864875568-374ab9e9dcbc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo" width={2000} height={1000} /> */}
+        {/* <video className="object-cover h-screen" 
+          src="https://ik.imagekit.io/ikmedia/example_video.mp4"
+          autoPlay loop muted 
+        /> */}
+
+        <video className="object-cover h-screen" 
+          src="https://cdn.strateticsxp.com/wildlife/index.mp4"
+          height="100%"
+          width="100%"
+          autoPlay loop muted 
+        />
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
             <div className="absolute w-4/5 flex flex-row justify-between items-center">
@@ -51,24 +62,11 @@ export default function Home() {
               <div className="w-1/2">
                 <h1 className="text-md uppercase font-extrabold text-yellow-300">Discover the Wonders of the Borneo Kingdom</h1>
                 <p className="text-8xl font-bold">New Wildlife Experience of Joy</p>
-                <a className="text-white mt-10 font-semibold bg-orange-600 p-4 hover:bg-orange-700 inline-block">Learn More</a>
+                <a href="#event" className="text-white mt-10 font-semibold bg-orange-600 p-4 rounded-md hover:bg-orange-700 inline-block">Learn More</a>
               </div>
 
               {/* Second column - Carousel Button*/}
               <div className="flex flex-col justify-center items-end text-right ml-10">
-                {/* Left Button */}
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 mb-6">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-
-                {/* Right Button */}
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z" clip-rule="evenodd" />
-                  </svg>
-                </div>
                 
               </div>
             </div>
@@ -185,7 +183,7 @@ export default function Home() {
 
       {/* Latest Events  -  Have not add logic, push the latest event and limit to 2 content view at a time*/}
       <section className="flex flex-col items-center w-full my-10">
-        <h2 className="mb-8 font-bold text-black text-4xl pt-4">Latest Events</h2>
+        <h2 id="event" className="mb-8 font-bold text-black text-4xl pt-4">Latest Events</h2>
         <div className="flex flex-row justify-evenly items-center gap-6 w-full h-full ">
           <div className="w-1/2 flex justify-center relative">
             <img className="object-cover w-full h-[626px]" src="https://images.unsplash.com/photo-1500463959177-e0869687df26?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo" width={800} height={400} />
