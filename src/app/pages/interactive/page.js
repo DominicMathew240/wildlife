@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from 'react-leaflet';
+import { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import {Icon} from 'leaflet';
+import { Icon } from 'leaflet';
 import Header from "../../components/Header";
-
-import Chart from 'chart.js/auto';
 import Modal from 'react-modal';
-
 import AnimalChart from '../../components/AnimalChart';
+import StickyHeader from '../../components/StickyHeader';
+import { motion } from 'framer-motion';
 
 export default function Interactive() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [prediction, setPrediction] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const [regions, setRegions] = useState([
@@ -175,13 +175,17 @@ export default function Interactive() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-
-    // Simulate classification
-    const dummyPrediction = 'Bearded Pig';
-    setPrediction(dummyPrediction);
-    setIsModalOpen(true);
+    setIsLoading(true);
+      try {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setPrediction('Bearded Pig');
+        setIsModalOpen(true);
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsLoading(false);
+      }
   };
     const isPointInPolygon = (point, polygon) => {
       let x = point[0], y = point[1];
@@ -273,95 +277,156 @@ export default function Interactive() {
       popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
     });
 
+    const modalStyles = {
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        zIndex: 9999,
+        backdropFilter: 'blur(8px)'
+      },
+      content: {
+        position: 'relative',
+        inset: 'unset',
+        padding: 0,
+        border: 'none',
+        background: 'none',
+        overflow: 'visible'
+      }
+    };
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-200">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <StickyHeader />
       <Header />
 
-      <h1 className="text-3xl font-bold text-center my-4">Interactive Map & Image Classification</h1>
+      <main className="container mx-auto px-4 py-8">
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl md:text-5xl font-bold text-center mb-8 text-gray-800"
+        >
+          Interactive Wildlife Map
+        </motion.h1>
 
-      <div className="flex justify-center items-center py-10 bg-gray-200">
-        <button onClick={simulateAnimalDetection} className="w-full max-w-md p-2 bg-green-500 text-white rounded-md">Simulate Animal Detection</button>
-      </div>
+        {/* Detection Button */}
+        <motion.div 
+          className="max-w-xl mx-auto mb-8"
+          whileHover={{ scale: 1.02 }}
+        >
+          <button 
+            onClick={simulateAnimalDetection}
+            className="w-full py-3 px-6 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg
+                     font-semibold shadow-lg hover:shadow-xl transition-all duration-300
+                     focus:ring-4 focus:ring-green-500 focus:ring-opacity-50"
+          >
+            Simulate Animal Detection
+          </button>
+        </motion.div>
 
-      {/* Interactive map for visualization of wildlife in Borneo */}
-      <div className="flex-grow flex justify-center items-center mt-2 z-0">
-        <MapContainer center={[1.388991652472288, 110.29704095871451]} zoom={14} style={{ height: "76vh", width: "80%" }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          {regions.map(region => (
-            <Polygon key={region.id} positions={region.positions}>
-              <Popup>{region.name}</Popup>
-            </Polygon>
-          ))}
-          {animalDetections.map(detection => (
-            <Marker key={detection.id} 
+        {/* Map Container */}
+        <div className="w-full h-[70vh] md:h-[80vh] rounded-xl overflow-hidden shadow-xl mb-8">
+          <MapContainer 
+            center={[1.388991652472288, 110.29704095871451]} 
+            zoom={14} 
+            className="w-full h-full z-10"
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            />
+            {regions.map(region => (
+              <Polygon 
+                key={region.id} 
+                positions={region.positions}
+                pathOptions={{ color: 'green', fillColor: 'green', fillOpacity: 0.2 }}
+              >
+                <Popup>{region.name}</Popup>
+              </Polygon>
+            ))}
+            {animalDetections.map(detection => (
+              <Marker 
+                key={detection.id} 
                 position={detection.position} 
-                icon={detection.type === 'orangutan' ? orangutanIcon : boarIcon}>
-              <Popup>
-                <div dangerouslySetInnerHTML={{ __html: detection.name }} />
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </div>
+                icon={detection.type === 'orangutan' ? orangutanIcon : boarIcon}
+              >
+                <Popup>
+                  <div dangerouslySetInnerHTML={{ __html: detection.name }} />
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
 
-      {/* Image input for classifying species */}
-      <div className="flex justify-center items-center py-10 bg-gray-200">
-        <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4 text-center">Upload Image for Classification</h2>
-          <form onSubmit={handleSubmit}>
-            <input type="file" accept="image/*" className="w-full p-2 border border-gray-300 rounded-md mb-4" onChange={handleFileChange} />
-            <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md">Classify</button>
+        {/* Classification Form */}
+        <motion.div 
+          className="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Upload Image for Classification</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleFileChange}
+                className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500
+                         transition-all duration-300 outline-none"
+              />
+            </div>
+            <button 
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-blue-600 
+                       text-white rounded-lg font-semibold shadow-lg hover:shadow-xl 
+                       transition-all duration-300 disabled:opacity-50"
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </span>
+              ) : 'Classify Image'}
+            </button>
           </form>
           {prediction && (
-            <div className="mt-4 p-2 bg-green-100 text-green-800 rounded-md">
-              <p>Prediction: {prediction}</p>
+            <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-lg">
+              <p className="font-medium">Prediction: {prediction}</p>
             </div>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </main>
 
-      {/* Modal for displaying animal information */}
+      {/* Modal */}
+      
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
-        contentLabel="Animal Information"
-        className="modal"
-        overlayClassName="modal-overlay"
+        style={modalStyles}
+        className="fixed inset-0 flex items-center justify-center p-4 z-[9999]"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm z-[9999]"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Animal Information</h2>
-        <div className="text-center flex flex-col justify-center items-center">
-          <div dangerouslySetInnerHTML={{ __html: animalInfo }} />
-          
-          <AnimalChart animalType={currentAnimalType} />
-        </div>
-        <button onClick={() => setIsModalOpen(false)} className="w-full p-2 bg-red-500 text-white rounded-md mt-4">Close</button>
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative z-[10000]"
+        >
+          <h2 className="text-3xl font-bold mb-6 text-gray-800">Animal Information</h2>
+          <div className="prose max-w-none mb-6">
+            <div dangerouslySetInnerHTML={{ __html: animalInfo }} />
+            <AnimalChart animalType={currentAnimalType} />
+          </div>
+          <button 
+            onClick={() => setIsModalOpen(false)}
+            className="w-full py-3 px-6 bg-red-500 text-white rounded-lg font-semibold
+                     hover:bg-red-600 transition-colors duration-300"
+          >
+            Close
+          </button>
+        </motion.div>
       </Modal>
-      <style jsx global>{`
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.75);
-          z-index: 1000;
-        }
-        .modal {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background: white;
-          padding: 20px;
-          border-radius: 8px;
-          max-width: 500px;
-          width: 90%;
-          z-index: 1001;
-        }
-      `}</style>
     </div>
   );
 }
