@@ -163,8 +163,8 @@ export default function PublishStory() {
 
                     {events.map((event) => (
                         <div key={event.event_id} className="flex flex-row justify-evenly items-center w-full my-4 cursor-pointer" onClick={() => openEventModal(event)}>
-                            <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
-                            {/* <img className="object-cover" src="" alt="Logo" width={200} height={200} /> */}
+                            {/* <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} /> */}
+                            <img src={event.img_url} alt={event.title} className="w-[280px] h-[200px] object-cover rounded-md" />
                             <div className="flex flex-col justify-center items-start w-1/2 ml-4">
 
                                 {/* Event Header */}

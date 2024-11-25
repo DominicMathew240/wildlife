@@ -70,10 +70,10 @@ app.get('/events/event_content/:event_id', (req, res) => {
 
 // create a new event
 app.post('/events/create', (req, res) => {
-    const { title, image, description, article, date, location } = req.body;
+    const { title, image, img_url, description, article, date, location } = req.body;
     const articleString = Array.isArray(article) ? article.join('\n') : article; // Join paragraphs into a single string with newline characters if article is an array
-    const query = 'INSERT INTO events (title, image, description, article, date, location) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [title, image, description, articleString, date, location];
+    const query = 'INSERT INTO events (title, image, img_url, description, article, date, location) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values = [title, image, img_url, description, articleString, date, location];
 
     db.query(query, values, (err) => {
         if (err) {

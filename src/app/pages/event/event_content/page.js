@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import axios from "axios";  // Import Axios
 
 // Components
@@ -10,18 +10,9 @@ import Footer from "../../../components/Footer";
 import StickyHeader from "../../../components/StickyHeader";
 
 export default function EventContent() {
-    const [eventId, setEventId] = useState(null);  // State to store event ID from input
+    const searchParams = useSearchParams();
+    const event_id = searchParams.get('event_id');  // Get event_id from query parameters
     const [event, setEvent] = useState(null);  // State to store event details
-
-    useEffect(() => {
-        // Retrieve event_id from the hidden input field
-        const hiddenEventId = document.querySelector('input[name="event_id"]')?.value;
-        if (hiddenEventId) {
-            setEventId(hiddenEventId);
-        } else {
-            console.error('Event ID not found in hidden input field');
-        }
-    }, []);
 
     useEffect(() => {
         // Only fetch if the `event_id` is present in the URL
