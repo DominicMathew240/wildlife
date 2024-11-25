@@ -67,7 +67,8 @@ export default function Event() {
                                 {/* <Link href={`/event/event_content/${event.event_id}`} className="hover:text-orange-500"> */}
                                 <Link href={`event/event_content/`} className="hover:text-orange-500">
                                     <input hidden name="event_id" value={event.event_id} />
-                                    <img src="http://placehold.it/770x420" alt={event.title} className="mb-4 w-full" />
+                                    {/* <img src="http://placehold.it/770x420" alt={event.title} className="mb-4 w-full" /> */}
+                                    <img src={event.img_url} alt={event.title} className="mb-4 w-[770px] h-[420px] object-cover" />
                                     <div className="flex flex-row">
                                         <p className="text-sm mb-4 mr-4">{ event.date }</p>
                                         <p className="text-sm mb-4">{ event.location }</p>

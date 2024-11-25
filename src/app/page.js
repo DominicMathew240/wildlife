@@ -190,7 +190,7 @@ export default function Home() {
             <div className="absolute ml-20 top-1/2 left-2/3 transform -translate-y-1/2 -translate-x-1/2 w-[300px] flex flex-col justify-center text-white items-start">
               <hr className="w-[80px] my-4 border-2 border-green-400" />
               <h3 className="mb-4 font-extrabold text-6xl">CHECK OUR UPCOMING EVENTS</h3>
-              <a href="/pages/event" className="text-white font-semibold bg-green-400 p-2 hover:bg-green-600 inline-block">View Event</a>
+              <a href="/pages/event" className="text-white font-semibold bg-green-400 p-2 rounded-md hover:bg-green-600 inline-block">View Event</a>
             </div>
           </div>
 
@@ -201,7 +201,9 @@ export default function Home() {
               .slice(0, 2) // Get the latest 2 events
               .map((event) => (
                 <div key={event.id} className="flex flex-row justify-evenly items-center w-full">
-                  <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} />
+                  {/* <img className="object-cover" src="https://placehold.co/200x200" alt="Logo" width={200} height={200} /> */}
+                  {/* <p>{event.img_url}</p> */}
+                  <img className="object-cover w-[200px] h-[200px]" src={event.img_url} alt="Logo" width={200} height={200} />
                   <div className="flex flex-col justify-center items-start w-1/2 ml-4">
 
                     {/* Event Header */}

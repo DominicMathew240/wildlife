@@ -3,12 +3,20 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-
+import {Icon} from 'leaflet';
 import Header from "../../components/Header";
+
+import Chart from 'chart.js/auto';
+import Modal from 'react-modal';
+
+import AnimalChart from '../../components/AnimalChart';
 
 export default function Interactive() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [prediction, setPrediction] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const [regions, setRegions] = useState([
     {
       id: 1,
@@ -150,6 +158,10 @@ export default function Interactive() {
     }
   ]);
 
+  const [animalDetections, setAnimalDetections] = useState([]);
+  const [nextAnimalType, setNextAnimalType] = useState('orangutan');
+  const [animalInfo, setAnimalInfo] = useState('');
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -165,32 +177,109 @@ export default function Interactive() {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    // Replace with your local Flask server URL
-    const backendUrl = 'http://localhost:5000/predict';
-
-    try {
-      const response = await fetch(backendUrl, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      setPrediction(data.prediction);
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while processing your request.');
-    }
+    // Simulate classification
+    const dummyPrediction = 'Bearded Pig';
+    setPrediction(dummyPrediction);
+    setIsModalOpen(true);
   };
+    const isPointInPolygon = (point, polygon) => {
+      let x = point[0], y = point[1];
+      let inside = false;
+      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        let xi = polygon[i][0], yi = polygon[i][1];
+        let xj = polygon[j][0], yj = polygon[j][1];
+        let intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+      }
+      return inside;
+    };
+
+    const calculateDistance = (point1, point2) => {
+      const [lat1, lon1] = point1;
+      const [lat2, lon2] = point2;
+      const R = 6371e3; // metres
+      const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+      const φ2 = lat2 * Math.PI/180;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+      const distance = R * c; // in metres
+      return distance;
+    };
+
+    const simulateAnimalDetection = () => {
+      const region = regions[0]; // Assuming only one region for simplicity
+      let newDetection;
+      const minDistance = 500; // Minimum distance between detections
+      do {
+        newDetection = {
+          id: animalDetections.length + 1,
+          position: [
+            1.388991652472288 + Math.random() * 0.01,
+            110.29704095871451 + Math.random() * 0.01
+          ],
+          name: nextAnimalType === 'orangutan' 
+            ? `<div style="text-align: center;">
+            <h3>Orangutan</h3>
+            <img src="https://cdn.strateticsxp.com/wildlife/orangutan-real.jpg" alt="Orangutan" style="width: 80%; height: auto;" />
+            <p><strong>Statistics:</strong></p>
+            <ul>
+              <li>Average Height: 1.2-1.5m</li>
+              <li>Average Weight: 30-90kg</li>
+            </ul>
+            <p><strong>Fun Fact:</strong></p>
+            <p>Orangutans are the largest arboreal mammals, spending most of their time in trees.</p>
+          </div>`
+        : `<div style="text-align: center;">
+            <h3>Bearded Pig</h3>
+            <img src="https://cdn.strateticsxp.com/wildlife/boar-real.jpeg" alt="Bearded Pig" style="width: 80%; height: auto;" />
+            <p><strong>Statistics:</strong></p>
+            <ul>
+              <li>Average Height: 0.55-1.1m</li>
+              <li>Average Weight: 50-90kg</li>
+            </ul>
+            <p><strong>Fun Fact:</strong></p>
+            <p>Bearded pigs are known for their distinctive facial hair and are excellent swimmers, often crossing rivers and even swimming between islands.</p>
+          </div>`,
+          type: nextAnimalType
+        };
+      } while (
+        !isPointInPolygon(newDetection.position, region.positions) ||
+        animalDetections.some(detection => calculateDistance(detection.position, newDetection.position) < minDistance)
+      );
+      setAnimalDetections([...animalDetections, newDetection]);
+      setAnimalInfo(newDetection.name);
+    };  
+
+    const orangutanIcon = new Icon ({
+      iconUrl: "https://cdn.strateticsxp.com/wildlife/orangutan.png",
+      iconSize: [50, 50], // size of the icon
+      iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+      popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+    });
+
+    const boarIcon = new Icon ({
+      iconUrl: "https://cdn.strateticsxp.com/wildlife/boar.png",
+      iconSize: [32, 32], // size of the icon
+      iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+      popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+    });
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
 
       <h1 className="text-3xl font-bold text-center my-4">Interactive Map & Image Classification</h1>
+
+      <div className="flex justify-center items-center py-10 bg-gray-200">
+        <button onClick={simulateAnimalDetection} className="w-full max-w-md p-2 bg-green-500 text-white rounded-md">Simulate Animal Detection</button>
+      </div>
+
       {/* Interactive map for visualization of wildlife in Borneo */}
       <div className="flex-grow flex justify-center items-center mt-2 z-0">
         <MapContainer center={[1.388991652472288, 110.29704095871451]} zoom={14} style={{ height: "90vh", width: "100%" }}>
@@ -202,6 +291,15 @@ export default function Interactive() {
             <Polygon key={region.id} positions={region.positions}>
               <Popup>{region.name}</Popup>
             </Polygon>
+          ))}
+          {animalDetections.map(detection => (
+            <Marker key={detection.id} 
+                position={detection.position} 
+                icon={detection.type === 'orangutan' ? orangutanIcon : boarIcon}>
+              <Popup>
+                <div dangerouslySetInnerHTML={{ __html: detection.name }} />
+              </Popup>
+            </Marker>
           ))}
         </MapContainer>
       </div>
@@ -221,6 +319,45 @@ export default function Interactive() {
           )}
         </div>
       </div>
+
+      {/* Modal for displaying animal information */}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        contentLabel="Animal Information"
+        className="modal"
+        overlayClassName="modal-overlay"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center">Animal Information</h2>
+        <div className="text-center flex flex-col justify-center items-center">
+          <div dangerouslySetInnerHTML={{ __html: animalInfo }} />
+          <AnimalChart animalType={animalDetections.length > 0 ? animalDetections[animalDetections.length - 1].type : nextAnimalType} />
+        </div>
+        <button onClick={() => setIsModalOpen(false)} className="w-full p-2 bg-red-500 text-white rounded-md mt-4">Close</button>
+      </Modal>
+      <style jsx global>{`
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.75);
+          z-index: 1000;
+        }
+        .modal {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          max-width: 500px;
+          width: 90%;
+          z-index: 1001;
+        }
+      `}</style>
     </div>
   );
 }
