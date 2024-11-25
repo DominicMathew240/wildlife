@@ -160,6 +160,7 @@ export default function Interactive() {
 
   const [animalDetections, setAnimalDetections] = useState([]);
   const [nextAnimalType, setNextAnimalType] = useState('orangutan');
+  const [currentAnimalType, setCurrentAnimalType] = useState('orangutan');
   const [animalInfo, setAnimalInfo] = useState('');
 
   const handleFileChange = (event) => {
@@ -253,6 +254,8 @@ export default function Interactive() {
         animalDetections.some(detection => calculateDistance(detection.position, newDetection.position) < minDistance)
       );
       setAnimalDetections([...animalDetections, newDetection]);
+      setCurrentAnimalType(nextAnimalType);
+      setNextAnimalType(nextAnimalType === 'orangutan' ? 'bearded pig' : 'orangutan');
       setAnimalInfo(newDetection.name);
     };  
 
@@ -271,7 +274,7 @@ export default function Interactive() {
     });
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-200">
       <Header />
 
       <h1 className="text-3xl font-bold text-center my-4">Interactive Map & Image Classification</h1>
@@ -282,7 +285,7 @@ export default function Interactive() {
 
       {/* Interactive map for visualization of wildlife in Borneo */}
       <div className="flex-grow flex justify-center items-center mt-2 z-0">
-        <MapContainer center={[1.388991652472288, 110.29704095871451]} zoom={14} style={{ height: "90vh", width: "100%" }}>
+        <MapContainer center={[1.388991652472288, 110.29704095871451]} zoom={14} style={{ height: "76vh", width: "80%" }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -331,7 +334,8 @@ export default function Interactive() {
         <h2 className="text-2xl font-bold mb-4 text-center">Animal Information</h2>
         <div className="text-center flex flex-col justify-center items-center">
           <div dangerouslySetInnerHTML={{ __html: animalInfo }} />
-          <AnimalChart animalType={animalDetections.length > 0 ? animalDetections[animalDetections.length - 1].type : nextAnimalType} />
+          
+          <AnimalChart animalType={currentAnimalType} />
         </div>
         <button onClick={() => setIsModalOpen(false)} className="w-full p-2 bg-red-500 text-white rounded-md mt-4">Close</button>
       </Modal>
