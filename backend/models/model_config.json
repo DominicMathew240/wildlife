@@ -1,0 +1,276 @@
+{
+    "species_list": [
+        "banded civet",
+        "banded linsang",
+        "bay cat",
+        "bearded pig",
+        "binturong",
+        "bird sp",
+        "bulwer's pheasant",
+        "great argus pheasant",
+        "ground tufted squirrel",
+        "human",
+        "leopard cat",
+        "long-tailed macaque",
+        "long-tailed porcupine",
+        "malayan civet",
+        "malayan porcupine",
+        "marbled cat",
+        "masked palm civet",
+        "mongoose sp",
+        "monitor lizard",
+        "mouse sp",
+        "mousedeer sp",
+        "muntjac sp",
+        "otter civet",
+        "pangolin",
+        "pig-tailed macaque",
+        "pigeon sp",
+        "rat sp",
+        "roughneck monitor lizard",
+        "roulroul",
+        "sambar deer",
+        "small-toothed palm civet",
+        "squirrel sp",
+        "sun bear",
+        "thick-spined porcupine",
+        "treeshrew sp",
+        "tufted squirrel",
+        "white fronted langur",
+        "yellow-throated marten"
+    ],
+    "species_to_idx": {
+        "banded civet": 0,
+        "banded linsang": 1,
+        "bay cat": 2,
+        "bearded pig": 3,
+        "binturong": 4,
+        "bird sp": 5,
+        "bulwer's pheasant": 6,
+        "great argus pheasant": 7,
+        "ground tufted squirrel": 8,
+        "human": 9,
+        "leopard cat": 10,
+        "long-tailed macaque": 11,
+        "long-tailed porcupine": 12,
+        "malayan civet": 13,
+        "malayan porcupine": 14,
+        "marbled cat": 15,
+        "masked palm civet": 16,
+        "mongoose sp": 17,
+        "monitor lizard": 18,
+        "mouse sp": 19,
+        "mousedeer sp": 20,
+        "muntjac sp": 21,
+        "otter civet": 22,
+        "pangolin": 23,
+        "pig-tailed macaque": 24,
+        "pigeon sp": 25,
+        "rat sp": 26,
+        "roughneck monitor lizard": 27,
+        "roulroul": 28,
+        "sambar deer": 29,
+        "small-toothed palm civet": 30,
+        "squirrel sp": 31,
+        "sun bear": 32,
+        "thick-spined porcupine": 33,
+        "treeshrew sp": 34,
+        "tufted squirrel": 35,
+        "white fronted langur": 36,
+        "yellow-throated marten": 37
+    },
+    "idx_to_species": {
+        "0": "banded civet",
+        "1": "banded linsang",
+        "2": "bay cat",
+        "3": "bearded pig",
+        "4": "binturong",
+        "5": "bird sp",
+        "6": "bulwer's pheasant",
+        "7": "great argus pheasant",
+        "8": "ground tufted squirrel",
+        "9": "human",
+        "10": "leopard cat",
+        "11": "long-tailed macaque",
+        "12": "long-tailed porcupine",
+        "13": "malayan civet",
+        "14": "malayan porcupine",
+        "15": "marbled cat",
+        "16": "masked palm civet",
+        "17": "mongoose sp",
+        "18": "monitor lizard",
+        "19": "mouse sp",
+        "20": "mousedeer sp",
+        "21": "muntjac sp",
+        "22": "otter civet",
+        "23": "pangolin",
+        "24": "pig-tailed macaque",
+        "25": "pigeon sp",
+        "26": "rat sp",
+        "27": "roughneck monitor lizard",
+        "28": "roulroul",
+        "29": "sambar deer",
+        "30": "small-toothed palm civet",
+        "31": "squirrel sp",
+        "32": "sun bear",
+        "33": "thick-spined porcupine",
+        "34": "treeshrew sp",
+        "35": "tufted squirrel",
+        "36": "white fronted langur",
+        "37": "yellow-throated marten"
+    },
+    "species_info": {
+        "banded civet": {
+            "class_id": 0,
+            "image_count": 187
+        },
+        "banded linsang": {
+            "class_id": 1,
+            "image_count": 2
+        },
+        "bay cat": {
+            "class_id": 2,
+            "image_count": 5
+        },
+        "bearded pig": {
+            "class_id": 3,
+            "image_count": 316
+        },
+        "binturong": {
+            "class_id": 4,
+            "image_count": 4
+        },
+        "bird sp": {
+            "class_id": 5,
+            "image_count": 4
+        },
+        "bulwer's pheasant": {
+            "class_id": 6,
+            "image_count": 102
+        },
+        "great argus pheasant": {
+            "class_id": 7,
+            "image_count": 343
+        },
+        "ground tufted squirrel": {
+            "class_id": 8,
+            "image_count": 3
+        },
+        "human": {
+            "class_id": 9,
+            "image_count": 204
+        },
+        "leopard cat": {
+            "class_id": 10,
+            "image_count": 105
+        },
+        "long-tailed macaque": {
+            "class_id": 11,
+            "image_count": 293
+        },
+        "long-tailed porcupine": {
+            "class_id": 12,
+            "image_count": 20
+        },
+        "malayan civet": {
+            "class_id": 13,
+            "image_count": 220
+        },
+        "malayan porcupine": {
+            "class_id": 14,
+            "image_count": 259
+        },
+        "marbled cat": {
+            "class_id": 15,
+            "image_count": 5
+        },
+        "masked palm civet": {
+            "class_id": 16,
+            "image_count": 5
+        },
+        "mongoose sp": {
+            "class_id": 17,
+            "image_count": 126
+        },
+        "monitor lizard": {
+            "class_id": 18,
+            "image_count": 14
+        },
+        "mouse sp": {
+            "class_id": 19,
+            "image_count": 49
+        },
+        "mousedeer sp": {
+            "class_id": 20,
+            "image_count": 204
+        },
+        "muntjac sp": {
+            "class_id": 21,
+            "image_count": 234
+        },
+        "otter civet": {
+            "class_id": 22,
+            "image_count": 1
+        },
+        "pangolin": {
+            "class_id": 23,
+            "image_count": 10
+        },
+        "pig-tailed macaque": {
+            "class_id": 24,
+            "image_count": 458
+        },
+        "pigeon sp": {
+            "class_id": 25,
+            "image_count": 2
+        },
+        "rat sp": {
+            "class_id": 26,
+            "image_count": 76
+        },
+        "roughneck monitor lizard": {
+            "class_id": 27,
+            "image_count": 2
+        },
+        "roulroul": {
+            "class_id": 28,
+            "image_count": 59
+        },
+        "sambar deer": {
+            "class_id": 29,
+            "image_count": 404
+        },
+        "small-toothed palm civet": {
+            "class_id": 30,
+            "image_count": 10
+        },
+        "squirrel sp": {
+            "class_id": 31,
+            "image_count": 17
+        },
+        "sun bear": {
+            "class_id": 32,
+            "image_count": 312
+        },
+        "thick-spined porcupine": {
+            "class_id": 33,
+            "image_count": 237
+        },
+        "treeshrew sp": {
+            "class_id": 34,
+            "image_count": 125
+        },
+        "tufted squirrel": {
+            "class_id": 35,
+            "image_count": 1
+        },
+        "white fronted langur": {
+            "class_id": 36,
+            "image_count": 12
+        },
+        "yellow-throated marten": {
+            "class_id": 37,
+            "image_count": 12
+        }
+    }
+}
