@@ -1,16 +1,28 @@
-// Create a simple server to connect with phpmyadmin and get data from the database.
-
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
+const { PDFDocument, rgb } = require("pdf-lib"); // Added pdf-lib import
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
-const port = 4000; // Changed port to 4000 to avoid conflicts
+const port = 4000;
 
-app.use(express.json()); // Middleware to parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.hostinger.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'certificate@cdn.strateticsxp.com',
+        pass: 'Wildlife@240'
+    }
+});
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -26,12 +38,16 @@ db.connect((err) => {
     console.log('Connected to database');
 });
 
+const certificatesDir = path.join(__dirname, 'certificates');
+if (!fs.existsSync(certificatesDir)) {
+    fs.mkdirSync(certificatesDir);
+}
+
 app.get('/events', (req, res) => {
     db.query('SELECT * FROM events', (err, result) => {
         if (err) {
             throw err;
         }
-        // res.send(result);
         res.json(result);
     });
 });
@@ -54,10 +70,10 @@ app.get('/events/event_content/:event_id', (req, res) => {
 
 // create a new event
 app.post('/events/create', (req, res) => {
-    const { title, image, description, article, date, location } = req.body;
+    const { title, image, img_url, description, article, date, location } = req.body;
     const articleString = Array.isArray(article) ? article.join('\n') : article; // Join paragraphs into a single string with newline characters if article is an array
-    const query = 'INSERT INTO events (title, image, description, article, date, location) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [title, image, description, articleString, date, location];
+    const query = 'INSERT INTO events (title, image, img_url, description, article, date, location) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values = [title, image, img_url, description, articleString, date, location];
 
     db.query(query, values, (err) => {
         if (err) {
@@ -147,6 +163,63 @@ app.get('/list-users', (req, res) => {
 
 app.get('/home', (req, res) => {
     res.json({ message: "Hello from server!" });
+});
+
+const generatePDF = async (email, name) => {
+    const templatePath = path.join(certificatesDir, 'certificate_template.pdf');
+    const existingPdfBytes = fs.readFileSync(templatePath);
+
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+
+    const { width, height } = firstPage.getSize();
+    firstPage.drawText(name, {
+        x: width / 2 - 90,
+        y: height / 2 - 30,
+        size: 30,
+        color: rgb(0, 0, 0),
+        align: 'center'
+    });
+
+    const pdfBytes = await pdfDoc.save();
+    const filePath = path.join(certificatesDir, `${email}_certificate.pdf`);
+    fs.writeFileSync(filePath, pdfBytes);
+
+    return filePath;
+};
+
+app.post('/send-certificate', async (req, res) => {
+    const { email, name } = req.body;
+
+    try {
+        const pdfPath = await generatePDF(email, name);
+
+        const mailOptions = {
+            from: 'certificate@cdn.strateticsxp.com',
+            to: email,
+            subject: 'Certificate of Donation',
+            text: 'Thank you for your donation. Here is your certificate.',
+            attachments: [
+                {
+                    filename: 'certificate.pdf',
+                    path: pdfPath,
+                    contentType: 'application/pdf'
+                }
+            ]
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                return res.status(500).send(error.toString());
+            }
+            res.status(200).send('Email sent: ' + info.response);
+        });
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        res.status(500).send('Error generating PDF');
+    }
 });
 
 app.listen(port, () => {
