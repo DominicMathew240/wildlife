@@ -58,12 +58,13 @@ app.get('/events/event_content/:event_id', (req, res) => {
     const { event_id } = req.params;  // Correct destructuring
     db.query('SELECT * FROM events WHERE event_id = ?', [event_id], (err, result) => {
         if (err) {
-            return res.status(500).send('Error fetching event details');
+            return res.status(500).json({ error: 'Error fetching event details' });
         }
         if (result.length > 0) {
+            res.setHeader('Content-Type', 'application/json');
             res.json(result[0]);            
         } else {
-            res.status(404).send('Event not found');
+            res.status(404).json({ error: 'Event not found' });
         }
     });
 });
@@ -222,6 +223,38 @@ app.post('/send-certificate', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Replace the direct server creation with a function
+let server;
+
+const startServer = () => {
+    server = app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+    return server;
+};
+
+const closeServer = async () => {
+    return new Promise((resolve) => {
+        db.end(() => {
+            if (server) {
+                server.close(() => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
+        });
+    });
+};
+
+// Only start the server if this file is run directly
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = { 
+    app, 
+    db, 
+    startServer, 
+    closeServer 
+};
