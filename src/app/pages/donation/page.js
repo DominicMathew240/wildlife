@@ -18,9 +18,16 @@ export default function Donation() {
 
     const validateForm = () => {
         const newErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
         if (!name) newErrors.name = "Name is required";
-        if (!email) newErrors.email = "Email is required";
+        if (!email) {
+            newErrors.email = "Email is required";
+        } else if (!emailRegex.test(email)) {
+            newErrors.email = "Please enter a valid email address";
+        }
         if (!selectedAmount) newErrors.amount = "Please select an amount";
+        
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -153,7 +160,12 @@ export default function Donation() {
                                 className={`w-full p-4 rounded-lg border-2 transition-all duration-300 focus:ring-2 focus:ring-blue-500 outline-none
                                     ${errors.email ? 'border-red-500' : 'border-gray-200'}`}
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    if (errors.email) {
+                                        setErrors({ ...errors, email: undefined });
+                                    }
+                                }}
                             />
                             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                         </div>
